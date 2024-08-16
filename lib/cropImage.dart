@@ -40,19 +40,29 @@ class _cropimagePageState extends State<cropimagePage> {
       ]
     });
 
-    final reponse = await http.post(
+    final response = await http.post(
       Uri.parse(url),
-      headers: {"Content-Type": "application/json"},
+      headers: {
+      "Authorization": "ya29.a0AcM612xqO3ycZF4KzV7qoVq0ZqPPBPWQsxeZ-DTs6gYM8xzbA72vKHodxEh_2yHj3Ozjl_1M7Hm5_IrPsxgGbob8LwVSXdGY6l6kHaumh37lVojb7el2r5R50kJOrH1GGaCgNGvspc1Zzag7CZz7Z-7I5a7hBRt6UxSQGO6vTylzRwaCgYKAbISARASFQHGX2MiitB2ZeuH-1ci5VYXfeDMWQ0181", // gcloud auth print-access-token으로 얻은 토큰 사용
+      "x-goog-user-project": "potato-431204",
+      "Content-Type": "application/json; charset=utf-8"
+    },
       body: body,
     );
 
-    if (reponse.statusCode == 200) {
-      final jsonRespones = json.decode(reponse.body);
-      final text = jsonRespones['responses'][0]['fulTextAnnotation']['text'];
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final text = jsonResponse['responses'][0]['fullTextAnnotation']['text'];
+
       setState(() {
-        _ocrText = 'Failed to extract text.';
+        _ocrText = text ?? 'Failed to extract text.';
       });
-    }
+      
+    } else {
+      setState(() {
+      _ocrText = 'Failed to extract text.';
+      });
+    }   
   }
 
 
