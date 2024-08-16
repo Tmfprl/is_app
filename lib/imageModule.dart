@@ -9,6 +9,7 @@ class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
   
   
+  
   @override
   State<CameraPage> createState() => _CameraPageState();
 }
@@ -18,6 +19,7 @@ class _CameraPageState extends State<CameraPage> {
   XFile? image;
   CroppedFile? croppedFile;
   final ImagePicker picker = ImagePicker();
+  String? extractedText;
 
   void pickImage(bool pickGalleryImage) async {
     if (pickGalleryImage == true) {
@@ -35,6 +37,12 @@ class _CameraPageState extends State<CameraPage> {
         MaterialPageRoute(
           builder: ((context) => cropimagePage(
                 cropImage: croppedImage,
+                onTextExtracted: (text) {
+                  setState(() {
+                    extractedText = text;
+                  });
+                  Navigator.pop(context); // 텍스트 추출 후 메인 화면으로 돌아가기
+                },
               )),
         ),
       );
@@ -54,27 +62,6 @@ class _CameraPageState extends State<CameraPage> {
     return croppedFile!;
   }
 
-  
-  _buildPhtoArea() {
-    return croppedFile != null
-      ?Container(
-        width: 300,
-        height: 300,
-        child: Image.file(File(croppedFile!.path),
-      ),
-      )
-      :Container(
-        width: 300,
-        height: 300,
-        color: const Color(0xffe2e5e8),
-        child: const Center(
-          child: Text(
-            "no image",
-            textAlign: TextAlign.center,
-          ),
-        )
-      );
-  }
   
   _buildButton() {
     return Row(
@@ -104,15 +91,32 @@ class _CameraPageState extends State<CameraPage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 50, width: double.infinity),
-          _buildPhtoArea(),
-          SizedBox(height: 20,),  
+          const SizedBox(height: 50, width: double.infinity),
           _buildButton(),
+          const SizedBox(height: 30),
+          extractedText != null
+            ? Container(
+              padding: const EdgeInsets.all(8.0),
+              color: const Color(0xffe2e5e8),
+              child: Text(
+                extractedText!,
+                style: TextStyle(fontSize: 16),
+              ),
+            ) 
+            : Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Color(0xffe2e5e8),
+              child: const Text(
+                "No text extracted",
+                style: TextStyle(fontSize: 16),
+              ),
+            )
         ],
       ),
     );
   }
   
+
 
 
 }
