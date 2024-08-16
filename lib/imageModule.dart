@@ -35,7 +35,7 @@ class _CameraPageState extends State<CameraPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: ((context) => cropimagePage(
+          builder: ((context) => CropImagePage(
                 cropImage: croppedImage,
                 onTextExtracted: (text) {
                   setState(() {
