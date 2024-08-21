@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; 
 import 'package:camera/camera.dart';
 import 'package:is_app/imageModule.dart';
+import 'package:is_app/config/DBConnect.dart';
 
 
 void main() {
+  dbConnector();
   runApp(const MainApp());
 }
 
