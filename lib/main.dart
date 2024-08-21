@@ -6,10 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:is_app/imageModule.dart';
 import 'package:is_app/config/DBConnect.dart';
+import 'package:is_app/memu.dart';
+import 'package:is_app/logInPage.dart';
 
 
 void main() {
-  dbConnector();
+  DatabaseService();
   runApp(const MainApp());
 }
 
@@ -20,7 +22,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CameraPage(),
+      home: LoginScreen(),
     );
   }
 
