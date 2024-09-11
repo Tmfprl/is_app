@@ -36,40 +36,62 @@ class DatabaseService {
     }
   }
 
-  // 사용자 검증 메서드
-  Future<bool> validateUser(String ID, String PW) async {
-    await connect(); // 데이터베이스 연결 시도
-
-    try {
-      final result = await _connection!.execute(
-        'SELECT * FROM user_info WHERE usr_id = :ID AND usr_pw = :PW',
-        {'ID': ID, 'PW': PW},
-      );
-
-      return result.rows.isNotEmpty; // 결과가 있는지 확인
-    } catch (e) {
-      print('Error validating user: $e');
-      return false;
-    } finally {
-      await close(); // 모든 작업 후 연결 종료
-    }
-  }
-
   // 사용자 데이터 삽입 예제
-  Future<void> insertUser(String ID, String PW) async {
-    await connect(); // 데이터베이스 연결 시도
+  /*Future<void> insertUser(String ID, String PW) async {
+    await connect();
 
     try {
-      await _connection!.execute(
-        'INSERT INTO user_info (usr_id, usr_pw) VALUES (:ID, :PW)',
+      await _connection.execute(
+        'INSERT INTO users (username, password) VALUES (@ID, @PW)',
         {'ID': ID, 'PW': PW},
       );
 
       print('User inserted successfully.');
     } catch (e) {
-      print('Error during user insertion: $e');
+      print('Error: $e');
     } finally {
-      await close(); // 모든 작업 후 연결 종료
+      await close();
     }
   }
+  */
+  Future<void> insertUser(String ID, String PW) async {
+    await connect();
+  
+    try {
+      final result = await _connection.execute(
+        'INSERT INTO user_info (usr_id, usr_pw) VALUES (@ID, @PW)',
+        {'ID': ID, 'PW': PW},
+      );
+
+      if (result.affectedRows != null && result.affectedRows! > BigInt.from(0)) {
+        print('User inserted successfully.');
+      } else {
+        print('No rows affected, insertion might have failed.');
+      }
+    } catch (e) {
+      print('Error during insertion: $e');
+    } finally {
+      await close();
+    }
+  }
+  // 사용자 존재 여부 확인
+  Future<bool> checkUserExists(String ID) async {
+    await connect();
+
+    try {
+      final result = await _connection.execute(
+        'SELECT * FROM user_info WHERE usr_id = @ID',
+        {'ID': ID},
+      );
+
+      print('Number of rows found: ${result.numOfRows}');
+      return result.numOfRows > 0;
+    } catch (e) {
+      print('Error during user check: $e');
+      return false;
+    } finally {
+      await close();
+    }
+  }
+
 }
