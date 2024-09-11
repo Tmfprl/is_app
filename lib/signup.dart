@@ -1,47 +1,63 @@
 //회원가입 페이지
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:is_app/config/DBConnect.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:is_app/logInPage.dart'; 
 
-class SingupPage extends StatefulWidget {
-  const SingupPage({super.key});
+class signupPage extends StatefulWidget {
+  const signupPage({super.key});
 
   @override
-  State<SingupPage> createState() => _SingupPageState();
+  State<signupPage> createState() => _signupPageState();
 }
 
-class _SingupPageState extends State<SingupPage> {
+class _signupPageState extends State<signupPage> {
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _databaseService = DatabaseService();
+  
+  Future<void> _signup() async {
+  final id = _usernameController.text;
+  final pw = _passwordController.text;
 
-  Future<void> _singup() async {
-    final ID = _usernameController.text;
-    final PW = _passwordController.text;
+  try {
+    await _databaseService.insertUser(id, pw);
 
-    try {
-      await _databaseService.insertUser(ID, PW);
+    // Verify if the user was inserted
+    bool userExists = await _databaseService.checkUserExists(id);
+    if (userExists) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sign up successful!'),
+          backgroundColor: Colors.green,
+        ),
+      );
       Navigator.pushReplacement(
         context, 
         MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
-    } catch (e) {
+      );
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sing up Failed')),
+        const SnackBar(content: Text('Sign up failed. Please try again.')),
       );
     }
-  
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('An error occurred: $e'),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
+}
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sing up')),
+      appBar: AppBar(title: Text('Sign up')),
       body: Padding(padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
@@ -51,12 +67,12 @@ class _SingupPageState extends State<SingupPage> {
           ),
           TextField(
             controller: _passwordController,
-            decoration: InputDecoration(labelText: 'Psaaword'),
+            decoration: InputDecoration(labelText: 'Password'),
             obscureText: true,
           ),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: _singup, 
+            onPressed: _signup, 
             child: Text('Sign up'),
           ),
         ],
