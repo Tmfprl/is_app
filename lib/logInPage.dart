@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final isValid = await _databaseService.validateUser(username, password);
 
+     
     if (isValid) {
       await _storageService.write(key: 'ID', value: username);
       await _storageService.write(key: 'PW', value: password);
@@ -34,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid username or password.')),
+        const SnackBar(content: Text('Invalid username or password.')),
       );
     }
   }

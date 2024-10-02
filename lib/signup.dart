@@ -24,7 +24,7 @@ class _SingupPageState extends State<SingupPage> {
     final PW = _passwordController.text;
 
     try {
-      await _databaseService.insertUser(ID, PW);
+      await _databaseService.validateUser(ID, PW);
       Navigator.pushReplacement(
         context, 
         MaterialPageRoute(builder: (context) => LoginScreen()),
