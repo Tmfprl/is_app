@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:is_app/logInPage.dart';
+import 'package:is_app/imageModule.dart';
+import 'package:is_app/signup.dart';
 
-
-//메뉴페이지
+// 메뉴 페이지
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
 
@@ -11,46 +12,46 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+    return Scaffold(
+      appBar: AppBar(title: Text('Main Menu')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
+                // 여기에 페이지 전환만 설정
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MainMenu()),
+                  MaterialPageRoute(builder: (context) => CameraPage()),
                 );
               },
               child: Text('Scan (API 호출 테스트 중)'),
             ),
-             ElevatedButton(
+            ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
+                // CropImagePage로 이동만 설정
+                Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(builder: (context) => signupPage()),
                 );
               },
-              child: Text('userinfo (아직 없음_회원가입페이지)'),
+              child: Text('User Info (회원가입 페이지)'),
             ),
-             ElevatedButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(
                   context, 
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(builder: (context) => signupPage()),
                 );
               },
-              child: Text('화원로그인 관리'),
+              child: Text('회원 로그인 관리'),
             ),
           ],
         ),
       ),
     );
   }
-
 }

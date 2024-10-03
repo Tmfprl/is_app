@@ -18,20 +18,19 @@ class CropImagePage extends StatefulWidget {
 class _CropImagePageState extends State<CropImagePage> {
   String? _ocrText;
 
+  // API 키를 여기에 입력하세요.
+  final String apiKey = 'AIzaSyDeiGDvIwXCbOZGHk3xwx1gRY9WsYts51E'; // 본인의 API 키로 교체
+
   Future<void> _extractTextFromImage(File imageFile) async {
     try {
       final bytes = await imageFile.readAsBytes();
+      print("Image bytes loaded: ${bytes.length} bytes"); // 이미지 로드 확인
       final base64Image = base64Encode(bytes);
+      print("Base64 encoded image created");
 
-      // API Key와 OAuth 2.0 토큰은 동시에 사용하지 않습니다.
-      // 여기서는 OAuth 2.0 토큰을 사용하여 API 요청을 수행합니다.
-      final apiKey = 'AIzaSyDeiGDvIwXCbOZGHk3xwx1gRY9WsYts51E';  // 만약 API Key를 사용할 경우
-      final accessToken = 'ya29.a0AcM612zutLC5nkNGzNHr1g9_Vr-dUUcJoHoHUUTjVVW6A4RMianihixTaGoFx0B_LhOj-ab3xnw9fwgobXDMDXR_grwD7hPJIzlKrbEmaS8BsSQrpa-g1y2oTH9jjeXdgYkH06fApGPNAV3SeLSLGC-s5wOy3-2Xy_2HHplR7bx_KgaCgYKAZwSARASFQHGX2MiEj4vSAUgiGid1i6l5skKQw0181';  // OAuth 2.0 토큰
+      // API 키를 URL의 파라미터로 추가
+      final url = "https://vision.googleapis.com/v1/images:annotate?key=$apiKey";
 
-      // API 호출 URL, OAuth 2.0 사용 시 key 파라미터 제외
-      final url = "https://vision.googleapis.com/v1/images:annotate";
-
-      // 요청 본문 설정
       final body = jsonEncode({
         "requests": [
           {
@@ -47,23 +46,27 @@ class _CropImagePageState extends State<CropImagePage> {
           }
         ]
       });
+      print("Request body created: $body"); // 요청 본문 확인
 
-      // POST 요청 수행
+      // API 호출
       final response = await http.post(
         Uri.parse(url),
         headers: {
-          "Authorization": "Bearer $accessToken", // OAuth 2.0 인증 토큰
-          "x-goog-user-project": "potato-431204", // Google Cloud 프로젝트 ID
           "Content-Type": "application/json; charset=utf-8"
         },
         body: body,
       );
 
+      print("Response status: ${response.statusCode}"); // 응답 상태 코드 확인
+      print("Response body: ${response.body}"); // 응답 내용 확인
+
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+        print("API Response: $jsonResponse");
 
-        // Ensure that 'fullTextAnnotation' exists in the response
+        // 응답에서 추출한 텍스트 가져오기
         final text = jsonResponse['responses'][0]['fullTextAnnotation']?['text'] ?? 'No text found.';
+
         setState(() {
           _ocrText = text;
         });
@@ -72,11 +75,13 @@ class _CropImagePageState extends State<CropImagePage> {
         setState(() {
           _ocrText = 'Error: ${errorResponse['error']['message']}';
         });
+        print("Error response: ${errorResponse['error']['message']}"); // 에러 메시지 확인
       }
     } catch (e) {
       setState(() {
         _ocrText = 'Failed to extract text. Error: $e';
       });
+      print("Exception: $e"); // 예외 확인
     }
   }
 
