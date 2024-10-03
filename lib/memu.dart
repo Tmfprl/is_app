@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:is_app/logInPage.dart';
 import 'package:is_app/imageModule.dart';
 import 'package:is_app/signup.dart';
+import 'package:is_app/userInfo.dart';
+
 
 // 메뉴 페이지
 class MainMenu extends StatefulWidget {
@@ -35,7 +37,7 @@ class _MainMenuState extends State<MainMenu> {
                 // CropImagePage로 이동만 설정
                 Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => signupPage()),
+                  MaterialPageRoute(builder: (context) => UserInfo()),
                 );
               },
               child: Text('User Info (회원가입 페이지)'),
