@@ -60,13 +60,14 @@ class _CropImagePageState extends State<CropImagePage> {
       print("Response status: ${response.statusCode}"); // 응답 상태 코드 확인
       print("Response body: ${response.body}"); // 응답 내용 확인
 
+      // CropImagePage에서 텍스트 추출 후 onTextExtracted 호출
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        print("API Response: $jsonResponse");
-
-        // 응답에서 추출한 텍스트 가져오기
         final text = jsonResponse['responses'][0]['fullTextAnnotation']?['text'] ?? 'No text found.';
+        print("Extracted Text: $text"); // 여기에 추가
 
+        // onTextExtracted 콜백 호출
+        widget.onTextExtracted(text);
         setState(() {
           _ocrText = text;
         });

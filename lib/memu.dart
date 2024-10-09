@@ -3,6 +3,7 @@ import 'package:is_app/logInPage.dart';
 import 'package:is_app/imageModule.dart';
 import 'package:is_app/signup.dart';
 import 'package:is_app/userInfo.dart';
+import 'package:is_app/config/settings_screen.dart';
 
 
 // 메뉴 페이지
@@ -48,7 +49,7 @@ class _MainMenuState extends State<MainMenu> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context, 
-                    MaterialPageRoute(builder: (context) => signupPage()),
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
                   );
                 },
                 child: Text('회원 로그인 관리'),

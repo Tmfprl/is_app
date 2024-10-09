@@ -70,4 +70,30 @@ class DatabaseService {
       await close();
     }
   }
+
+  Future<String?> getIngredientInfoFromDB(String ingredientName) async {
+    try {
+      await connect();
+
+      // 성분 정보를 가져오는 SQL 쿼리
+      final result = await _connection.execute(
+        'SELECT ingredient_info FROM cosmetic_ingredient WHERE ingrKorName = :ingredientName',
+        {'ingredientName': ingredientName},
+      );
+
+      // 결과가 비어 있지 않은 경우
+      if (result.rows.isNotEmpty) {
+        // 첫 번째 행을 가져온 후, 해당 열의 값에 접근
+        var row = result.rows.first; // ResultSetRow 객체
+        return row.colByName('ingredient_info').toString(); // 'ingredient_info'는 데이터베이스 열 이름
+      } else {
+        return null; // 결과가 없으면 null 반환
+      }
+    } catch (e) {
+      print('Error retrieving ingredient information: $e');
+      return null;
+    } finally {
+      await close();
+    }
+  }
 }
