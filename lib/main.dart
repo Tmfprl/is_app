@@ -1,18 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-
-import 'package:image_picker/image_picker.dart'; 
-import 'package:camera/camera.dart';
-import 'package:is_app/imageModule.dart';
+import 'package:is_app/splashscreen.dart'; // SplashScreen을 가져옵니다.
 import 'package:is_app/config/DBConnect.dart';
 import 'package:is_app/memu.dart';
-import 'package:is_app/logInPage.dart';
-
+import 'package:is_app/logInPage.dart'; // LoginScreen을 가져옵니다.
 
 void main() {
   DatabaseService();
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -20,11 +14,9 @@ class MainApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: SplashScreen(), // 스플래시 화면으로 변경
     );
   }
-
-  
 }
