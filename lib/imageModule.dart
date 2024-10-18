@@ -4,8 +4,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:is_app/cropImage.dart';
 import 'package:is_app/config/DBConnect.dart';
+import 'package:is_app/view/ViewIngredientInfo.dart';
 
 class CameraPage extends StatefulWidget {
+  
+
   const CameraPage({super.key});
   
   @override
@@ -20,7 +23,9 @@ class _CameraPageState extends State<CameraPage> {
   String? extractedText;
   List<String> ingredients = []; 
   String? selectedIngredientInfo; // 선택된 성분 정보 저장
+  String? selectedTable; // 선택된 성분표 종류를 저장할 변수
 
+  // 이미지 선택 및 텍스트 추출 후 카테고리 선택
   void pickImage(bool pickGalleryImage) async {
     try {
       image = pickGalleryImage
@@ -40,8 +45,11 @@ class _CameraPageState extends State<CameraPage> {
                 setState(() {
                   extractedText = text;
                 });
-                _processExtractedText(extractedText!); // 텍스트 처리 함수 호출
-                Navigator.pop(context); // 텍스트 추출 후 메인 화면으로 돌아가기
+                // 텍스트 추출 후 성분 리스트 생성
+              _processExtractedText(extractedText!, 'cosmetic'); // 임의로 'cosmetic' 카테고리 지정
+            
+                // 텍스트 추출 후 카테고리 선택
+                _showIngredientTypeDialog(ingredients.first); // 카테고리 선택 팝업 호출
               },
             ),
           ),
@@ -52,29 +60,105 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  // DB에서 개별 성분 정보를 가져오는 함수
-  Future<void> fetchIngredientInfo(String ingredient) async {
-    // DB에서 성분 정보 가져오기
-    var ingredientInfo = await _databaseService.getIngredientInfoFromDB(ingredient.trim());
-
-    if (ingredientInfo != null) {
-      setState(() {
-        selectedIngredientInfo = ingredientInfo;
-      });
-    } else {
-      setState(() {
-        selectedIngredientInfo = "해당 성분에 대한 정보가 없습니다.";
-      });
+  // 카테고리 선택 다이얼로그
+  Future<void> _showIngredientTypeDialog(String ingredient) async {
+    String? selectedType = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("성분표 종류를 선택하세요"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // 다이얼로그 닫기
+                  setState(() {
+                    selectedTable = 'cosmetic_ingredient'; // 선택한 성분표 종류
+                  });
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const ViewInfo()),
+                  // );
+                },
+                child: Text('화장품 성분표'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // 다이얼로그 닫기
+                  setState(() {
+                    selectedTable = 'medical_items'; // 선택한 성분표 종류
+                  });
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const ViewInfo()),
+                  // );
+                },
+                child: Text('의약품 성분표'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // 다이얼로그 닫기
+                  setState(() {
+                    selectedTable = 'chemical_ingredient'; // 선택한 성분표 종류
+                  });
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const ViewInfo()),
+                  // );
+                },
+                child: Text('화학약품 성분표'),
+              ),
+            ],
+          ),
+          
+        );
+      },
+    );
+      if (selectedType != null) {
+      // 선택된 성분표 종류를 가지고 메인 화면으로 돌아가기
+      fetchIngredientInfo(selectedType);
     }
   }
 
-  // 성분 텍스트를 처리하고 DB에서 성분 정보를 가져오는 함수
-  void _processExtractedText(String extractedText) {
+
+  // 선택한 카테고리에 따라 성분 정보를 가져오는 함수
+  Future<void> _fetchAllIngredientInfo(String ingredient, tableName) async {
+    for (String ingredient in ingredients) {
+      await _fetchAllIngredientInfo(ingredient.trim(), tableName); // 선택된 카테고리에 맞게 조회
+    }
+  }
+
+  // DB에서 성분 정보 조회 (카테고리별로 다른 테이블 조회)
+  Future<void> fetchIngredientInfo(String ingredient) async {
+    if (selectedTable != null) {
+      var ingredientInfo = await _databaseService.getIngredientInfoFromDB(ingredient.trim(), selectedTable!);
+
+      if (ingredientInfo != null) {
+        setState(() {
+          selectedIngredientInfo = ingredientInfo;
+        });
+      } else {
+        setState(() {
+          selectedIngredientInfo = "해당 성분에 대한 정보가 없습니다.";
+        });
+      }
+    } else {
+      // 테이블이 선택되지 않은 경우에 대한 처리
+      setState(() {
+        selectedIngredientInfo = "성분표 종류를 먼저 선택하세요.";
+      });
+    }
+  }
+  
+
+  // 성분 텍스트를 처리하는 함수
+  void _processExtractedText(String tableName, String columnName) {
     // 필터링할 단어 목록 정의 (제거하고자 하는 단어들)
     List<String> wordsToExclude = ['전성분'];
 
     // "전성분"과 다른 불필요한 단어들을 제거
-    String cleanedText = extractedText;
+    String cleanedText = extractedText ?? '';
 
     for (String word in wordsToExclude) {
       cleanedText = cleanedText.replaceAll(RegExp('$word[\s]*', caseSensitive: false), '');
@@ -82,8 +166,12 @@ class _CameraPageState extends State<CameraPage> {
 
     // 줄바꿈 및 공백 정리
     cleanedText = cleanedText
-        .replaceAll(RegExp(r'[\n\r\t]'), ' ')  // 줄바꿈과 탭을 공백으로 변환
+        .replaceAll(RegExp(r'[\n\r\t]'), '')  // 줄바꿈과 탭을 공백으로 변환
         .replaceAll(RegExp(r'\s+'), ' ')  // 여러 개의 공백을 하나로 변환
+        .replaceAll('[', '') // '['를 '대체할 문자1'로
+        .replaceAll(']', '') // ']'를 '대체할 문자2'로
+        .replaceAll('1', '') // '1'을 '대체할 문자3'로
+        .replaceAll(':', ', ')
         .trim();
 
     // 성분을 콤마와 공백으로 분리하여 리스트로 만듦
@@ -108,7 +196,7 @@ class _CameraPageState extends State<CameraPage> {
     );
     return croppedFile!;
   }
-  
+
   _buildButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +233,8 @@ class _CameraPageState extends State<CameraPage> {
                     itemBuilder: (context, index) {
                       return ElevatedButton(
                         onPressed: () {
-                          fetchIngredientInfo(ingredients[index]); // 개별 성분명(문자열)을 전달
+                          // Directly fetch ingredient info without showing dialog
+                          fetchIngredientInfo(ingredients[index]); 
                         },
                         child: Text(
                           ingredients[index],

@@ -71,21 +71,41 @@ class DatabaseService {
     }
   }
 
-  Future<String?> getIngredientInfoFromDB(String ingredientName) async {
+  Future<String?> getIngredientInfoFromDB(String ingredientName, String tableType) async {
+    String columnName;
+    String colName;
+
+    switch (tableType) {
+      case 'cosmetic_ingredient':
+        columnName = 'ingredient_info'; // 화장품 테이블의 열 이름
+        colName = 'ingrKorName';
+        break;
+      case 'medical_items':
+        columnName = 'efcyQesitm'; // 의약품 테이블의 열 이름
+        colName = 'itemName';
+
+        break;
+      case 'chemical_ingredient':
+        columnName = 'sysmtom'; // 화학약품 테이블의 열 이름
+        colName = 'chemiKorName';
+        break;
+      default:
+        throw Exception('잘못된 성분표 종류입니다.');
+    }
+
     try {
       await connect();
 
       // 성분 정보를 가져오는 SQL 쿼리
       final result = await _connection.execute(
-        'SELECT ingredient_info FROM cosmetic_ingredient WHERE ingrKorName = :ingredientName',
+        'SELECT $columnName FROM $tableType WHERE $colName = :ingredientName',
         {'ingredientName': ingredientName},
       );
 
       // 결과가 비어 있지 않은 경우
       if (result.rows.isNotEmpty) {
-        // 첫 번째 행을 가져온 후, 해당 열의 값에 접근
-        var row = result.rows.first; // ResultSetRow 객체
-        return row.colByName('ingredient_info').toString(); // 'ingredient_info'는 데이터베이스 열 이름
+        var row = result.rows.first;
+        return row.colByName(columnName).toString();
       } else {
         return null; // 결과가 없으면 null 반환
       }
