@@ -3,6 +3,7 @@ import 'package:is_app/logInPage.dart';
 import 'package:is_app/imageModule.dart';
 import 'package:is_app/signup.dart';
 import 'package:is_app/userInfo.dart';
+import 'package:is_app/userAllergyData.dart';
 import 'package:is_app/config/settings_screen.dart';
 
 
@@ -54,6 +55,15 @@ class _MainMenuState extends State<MainMenu> {
                 },
                 child: Text('회원 로그인 관리'),
               ),
+              ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => userAllergyData()), // 이동할 페이지를 지정합니다.
+                );
+              },
+              child: Text('나의 알러지 데이터'),
+            ),
             ],
           ),
         ),
