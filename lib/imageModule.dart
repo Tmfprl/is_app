@@ -155,7 +155,7 @@ class _CameraPageState extends State<CameraPage> {
   // 성분 텍스트를 처리하는 함수
   void _processExtractedText(String tableName, String columnName) {
     // 필터링할 단어 목록 정의 (제거하고자 하는 단어들)
-    List<String> wordsToExclude = ['전성분'];
+    List<String> wordsToExclude = ['전성분', '보존제', '기타물질', '양쪽성이온계', '음이온계'];
 
     // "전성분"과 다른 불필요한 단어들을 제거
     String cleanedText = extractedText ?? '';
@@ -172,6 +172,11 @@ class _CameraPageState extends State<CameraPage> {
         .replaceAll(']', '') // ']'를 '대체할 문자2'로
         .replaceAll('1', '') // '1'을 '대체할 문자3'로
         .replaceAll(':', ', ')
+        .replaceAll('•', '')
+        .replaceAll('·', ', ')
+        .replaceAll('.', ', ')
+        .replaceAll('(', ', ')
+        .replaceAll(')', ', ')
         .trim();
 
     // 성분을 콤마와 공백으로 분리하여 리스트로 만듦
