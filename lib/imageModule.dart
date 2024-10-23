@@ -223,14 +223,39 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Camera module'),
+        title: Text('Ingrdient Search'),
         centerTitle: true,
       ),
       body: Column(
         children: [
           const SizedBox(height: 50, width: double.infinity),
           _buildButton(),
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
+          SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              width: 350,
+              height: 40,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: '검색',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  prefixIcon: Icon(Icons.search),
+                ),
+                style: TextStyle(fontSize: 16),
+                textAlignVertical: TextAlignVertical.center,
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
           Expanded(
             child: ingredients.isNotEmpty
                 ? ListView.builder(
@@ -252,7 +277,7 @@ class _CameraPageState extends State<CameraPage> {
                     padding: const EdgeInsets.all(8.0),
                     color: const Color(0xffe2e5e8),
                     child: const Text(
-                      "No ingredients extracted",
+                      "성분 정보가 없습니다.",
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
