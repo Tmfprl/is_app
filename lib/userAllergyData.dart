@@ -55,8 +55,10 @@ class _AllergyListState extends State<AllergyList> {
 
   void _addAllergy(Allergy allergy) {
     setState(() {
-      allergies.add(allergy);
-      filteredAllergies.add(allergy);
+      if (!allergies.contains(allergy)) {
+        allergies.add(allergy);
+        // filteredAllergies.add(allergy);
+      }
     });
   }
 
@@ -68,7 +70,6 @@ class _AllergyListState extends State<AllergyList> {
       }).toList();
     });
   }
-
   void _showAllergyDetails(Allergy allergy) {
     showDialog(
       context: context,
@@ -392,6 +393,8 @@ class _AllergyListState extends State<AllergyList> {
   }
 
   void _showAddAllergyDialog(BuildContext context) {
+    
+
     TextEditingController nameController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     List<String> tags = [];

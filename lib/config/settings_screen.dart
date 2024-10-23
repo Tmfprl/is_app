@@ -33,10 +33,6 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: () => _logout(context),
                 child: Text('Logout'),
               ),
-              ElevatedButton(
-                onPressed: () => _logout(context),
-                child: Text('My Infomation(아직)'),
-              ),
             ],
           ),
         ),

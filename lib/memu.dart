@@ -31,30 +31,21 @@ class _MainMenuState extends State<MainMenu> {
                   // 여기에 페이지 전환만 설정
                   Navigator.push(
                     context,
+                    // CropImagePage로 이동만 설정
                     MaterialPageRoute(builder: (context) => CameraPage()),
                   );
                 },
                 child: Text('Scan (API 호출 테스트 중)'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // CropImagePage로 이동만 설정
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => UserInfo()),
-                  );
-                },
-                child: Text('User Info (회원가입 페이지)'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context, 
-                    MaterialPageRoute(builder: (context) => SettingsScreen()),
-                  );
-                },
-                child: Text('회원 로그인 관리'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context, 
+              //       MaterialPageRoute(builder: (context) => UserInfo()),
+              //     );
+              //   },
+              //   child: Text('User Info (회원가입 페이지)'),
+              // ),
               ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -64,6 +55,15 @@ class _MainMenuState extends State<MainMenu> {
               },
               child: Text('나의 알러지 데이터'),
             ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context, 
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  );
+                },
+                child: Text('회원 로그인 관리'),
+              ),
             ],
           ),
         ),
