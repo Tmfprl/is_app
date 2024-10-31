@@ -5,6 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:is_app/imageModule.dart';
 
+/// image crop 
+/// 
+/// @author :  박경은
+/// 
+/// funtion : crop ingredient list image before scan
+
 class CropImagePage extends StatefulWidget {
   final CroppedFile cropImage;
   final Function(String) onTextExtracted; // 텍스트를 메인화면으로 전달하기 위한 콜백 함수

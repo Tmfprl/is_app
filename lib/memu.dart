@@ -4,10 +4,19 @@ import 'package:is_app/imageModule.dart';
 import 'package:is_app/signup.dart';
 import 'package:is_app/userInfo.dart';
 import 'package:is_app/userAllergyData.dart';
-import 'package:is_app/config/settings_screen.dart';
+import 'package:is_app/settingsScreen.dart';
 
 
-// 메뉴 페이지
+///  Main Menu Page 
+/// 
+/// funtion 
+/// : navigate to user infomation setting page - SettingsScreen.dart
+/// : navigate to ingerdient scan page - CameraPage.dart
+/// : navigate to user allergy list page - userAllergyData.dart
+/// 
+/// update history 
+/// : 2024.10.31_add code info
+
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
 

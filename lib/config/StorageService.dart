@@ -1,5 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+
+/// Auto login
+/// 
+/// @author : 박경은
+/// 
+/// @return : login history info
+
 class StorageService {
   final _storage = const FlutterSecureStorage();
 

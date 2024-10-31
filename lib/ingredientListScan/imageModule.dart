@@ -2,13 +2,28 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:is_app/cropImage.dart';
+import 'package:is_app/common/cropImage.dart';
 import 'package:is_app/config/DBConnect.dart';
-import 'package:is_app/view/ViewIngredientInfo.dart';
+import 'package:is_app/ingredientListScan/ViewIngredientInfo.dart';
+
+/// ingredient scan main funtion
+///
+/// @author : 박경은
+///
+/// method 
+/// : pickImage()
+/// : _showIngredientTypeDialog()
+/// : _fetchAllIngredientInfo()
+/// : fetchIngredientInfo()
+/// : _processExtractedText()
+/// : cropImages()
+/// : _buildButton()
+///
+/// update history 
+/// : 2024.10.31_add code info
+///
 
 class CameraPage extends StatefulWidget {
-  
-
   const CameraPage({super.key});
   
   @override

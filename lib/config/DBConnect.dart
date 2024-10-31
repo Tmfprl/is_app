@@ -1,5 +1,13 @@
 import 'package:mysql_client/mysql_client.dart';
 
+/// DB Config 
+///
+/// @author : 박경은
+/// 
+/// database connection info 
+/// 
+/// @return : db response result
+
 class DatabaseService {
   late MySQLConnection _connection;
 
@@ -53,7 +61,7 @@ class DatabaseService {
     }
   }
 
-  // 사용자 존재 확인 메서드 추가
+  // 사용자 존재 확인 메서드
   Future<bool> checkUserExists(String ID) async {
     try {
       await connect();
@@ -70,23 +78,23 @@ class DatabaseService {
       await close();
     }
   }
-
+  // 성분표 분석(scan) 조회 결과 반환 메소드
   Future<String?> getIngredientInfoFromDB(String ingredientName, String tableType) async {
     String columnName;
     String colName;
 
     switch (tableType) {
       case 'cosmetic_ingredient':
-        columnName = 'ingredient_info'; // 화장품 테이블의 열 이름
+        columnName = 'ingredient_info'; // cosmetic ingredient table
         colName = 'ingrKorName';
         break;
       case 'medical_items':
-        columnName = 'efcyQesitm'; // 의약품 테이블의 열 이름
+        columnName = 'efcyQesitm'; // medical ingredient table
         colName = 'itemName';
 
         break;
       case 'chemical_ingredient':
-        columnName = 'sysmtom'; // 화학약품 테이블의 열 이름
+        columnName = 'sysmtom'; // chemical ingredient table
         colName = 'chemiKorName';
         break;
       default:
@@ -96,18 +104,17 @@ class DatabaseService {
     try {
       await connect();
 
-      // 성분 정보를 가져오는 SQL 쿼리
+      // select
       final result = await _connection.execute(
         'SELECT $columnName FROM $tableType WHERE $colName = :ingredientName',
         {'ingredientName': ingredientName},
       );
 
-      // 결과가 비어 있지 않은 경우
       if (result.rows.isNotEmpty) {
         var row = result.rows.first;
         return row.colByName(columnName).toString();
       } else {
-        return null; // 결과가 없으면 null 반환
+        return null; // select query response result = result
       }
     } catch (e) {
       print('Error retrieving ingredient information: $e');
