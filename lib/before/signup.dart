@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:is_app/config/DBConnect.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:is_app/logInPage.dart'; 
+import 'package:is_app/before/logInPage.dart'; 
 
 class signupPage extends StatefulWidget {
   const signupPage({super.key});

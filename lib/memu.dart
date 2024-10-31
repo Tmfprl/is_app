@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:is_app/logInPage.dart';
-import 'package:is_app/imageModule.dart';
-import 'package:is_app/signup.dart';
-import 'package:is_app/userInfo.dart';
-import 'package:is_app/userAllergyData.dart';
-import 'package:is_app/settingsScreen.dart';
+import 'package:is_app/before/logInPage.dart';
+import 'package:is_app/ingredientListScan/imageModule.dart';
+import 'package:is_app/before/signup.dart';
+import 'package:is_app/user/userInfo.dart';
+import 'package:is_app/user/userAllergyData.dart';
+import 'package:is_app/user/settingsScreen.dart';
 
 
 ///  Main Menu Page 

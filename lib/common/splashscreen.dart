@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:is_app/main.dart'; // LoginScreen을 가져옵니다.
-import 'package:is_app/logInPage.dart';
+import 'package:is_app/before/logInPage.dart';
 
 class SplashScreen extends StatelessWidget {
   @override

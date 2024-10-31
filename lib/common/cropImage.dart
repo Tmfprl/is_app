@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
-import 'package:is_app/imageModule.dart';
+import 'package:is_app/ingredientListScan/imageModule.dart';
 
 /// image crop 
 /// 

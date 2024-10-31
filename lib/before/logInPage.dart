@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:is_app/config/DBConnect.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:is_app/memu.dart'; // 메인 메뉴 페이지
-import 'package:is_app/signup.dart';
+import 'package:is_app/before/signup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
