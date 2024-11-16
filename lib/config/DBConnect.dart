@@ -105,6 +105,7 @@ class DatabaseService {
     }
   }
 
+
   // 성분표 분석(scan) 조회 결과 반환 메소드
   Future<String?> getIngredientInfoFromDB(String ingredientName, String tableType) async {
     String columnName;
@@ -200,7 +201,7 @@ class DatabaseService {
       await close();
     }
   }
-
+  
   Future<List<String>> searchMedisen(String medisenName) async {
     try {
       await connect();
