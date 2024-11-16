@@ -147,26 +147,39 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   // DB에서 성분 정보 조회 (카테고리별로 다른 테이블 조회)
-  Future<void> fetchIngredientInfo(String ingredient) async {
+  // Future<void> fetchIngredientInfo(String ingredient) async {
+  //   if (selectedTable != null) {
+  //     var ingredientInfo = await _databaseService.getIngredientInfoFromDB(ingredient.trim(), selectedTable!);
+
+  //     if (ingredientInfo != null) {
+  //       setState(() {
+  //         selectedIngredientInfo =  ingredientInfo; // 성분 정보가 있을 때 반환  
+  //       });
+  //     } else {
+  //       setState(() {
+  //         selectedIngredientInfo =  "해당 성분에 대한 정보가 없습니다."; // 성분 정보가 없을 때 메시지 반환
+  //       });
+  //     }
+  //   } else {
+  //     setState(() {
+  //         selectedIngredientInfo =  "성분표 종류를 먼저 선택하세요."; // 선택된 테이블이 없는 경우 메시지 반환
+  //       });
+  //   }
+  // }
+  Future<String> fetchIngredientInfo(String ingredient) async {
     if (selectedTable != null) {
       var ingredientInfo = await _databaseService.getIngredientInfoFromDB(ingredient.trim(), selectedTable!);
 
       if (ingredientInfo != null) {
-        setState(() {
-          selectedIngredientInfo =  ingredientInfo; // 성분 정보가 있을 때 반환  
-        });
+        return ingredientInfo; // 성분 정보가 있을 때 반환
       } else {
-        setState(() {
-          selectedIngredientInfo =  "해당 성분에 대한 정보가 없습니다."; // 성분 정보가 없을 때 메시지 반환
-        });
+        return "해당 성분에 대한 정보가 없습니다."; // 성분 정보가 없을 때 메시지 반환
       }
     } else {
-      setState(() {
-          selectedIngredientInfo =  "성분표 종류를 먼저 선택하세요."; // 선택된 테이블이 없는 경우 메시지 반환
-        });
+      return "성분표 종류를 먼저 선택하세요."; // 선택된 테이블이 없는 경우 메시지 반환
     }
   }
-  
+
 
   // 성분 텍스트를 처리하는 함수
   void _processExtractedText(String tableName, String columnName) {
@@ -248,6 +261,32 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
+  void _showIngredientInfoDialog(BuildContext context, String ingredientInfo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('성분 정보'),
+          content: Text(
+            ingredientInfo.isNotEmpty
+                ? ingredientInfo
+                : "성분 정보를 선택하세요.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // 다이얼로그 닫기
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   _buildButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -315,8 +354,10 @@ class _CameraPageState extends State<CameraPage> {
                         // 공백이 아닌 경우에만 버튼 생성
                         if (ingredients[index].trim().isNotEmpty) {
                           return ElevatedButton(
-                            onPressed: () {
-                              fetchIngredientInfo(ingredients[index]);
+                            onPressed: () async {
+                              // fetchIngredientInfo(ingredients[index]);
+                              String ingredientInfo = await fetchIngredientInfo(ingredients[index]);
+                              _showIngredientInfoDialog(context, ingredientInfo);
                             },
                             child: Text(
                               ingredients[index] == "2-헥산다이올" 
@@ -339,21 +380,22 @@ class _CameraPageState extends State<CameraPage> {
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
+                  
             ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              color: const Color(0xffe2e5e8),
-              child: selectedIngredientInfo != null
-                  ? Text(
-                      selectedIngredientInfo!,
-                      style: TextStyle(fontSize: 16),
-                    )
-                  : const Text(
-                      "성분 정보를 선택하세요.",
-                      style: TextStyle(fontSize: 16),
-                  ),
-            ),
+            // const SizedBox(height: 20),
+            // Container(
+            //   padding: const EdgeInsets.all(8.0),
+            //   color: const Color(0xffe2e5e8),
+            //   child: selectedIngredientInfo != null
+            //       ? Text(
+            //           selectedIngredientInfo!,
+            //           style: TextStyle(fontSize: 16),
+            //         )
+            //       : const Text(
+            //           "성분 정보를 선택하세요.",
+            //           style: TextStyle(fontSize: 16),
+            //       ),
+            // ),
         ],
       ),
     );
