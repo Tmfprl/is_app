@@ -88,6 +88,25 @@ class DatabaseService {
       await close();
     }
   }
+
+  //사용자 알러지 데이터 삽입 메서드
+  Future<void> insertUserAllergyData(String name, String image, String tags, String info) async {
+    String? userId = await getUser.getUserInfo('usr_id');
+    try {
+      await connect();
+      await _connection.execute(
+        'INSERT INTO my_ingredient (usr_id, ingr_name, ingr_image, ingr_tags, ingr_info) VALUES (:userId, :name, :image, :tags, :info)',
+        {'userId':userId, 'name': name, 'image': image, 'tags' : tags, 'info' : info},
+      );
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      await close();
+    }
+  }
+
+
+
   // 성분표 분석(scan) 조회 결과 반환 메소드
   Future<String?> getIngredientInfoFromDB(String ingredientName, String tableType) async {
     String columnName;
