@@ -155,7 +155,7 @@ class _AllergyListState extends State<AllergyList> {
                       ElevatedButton(
                         onPressed: () async {
                           final picker = ImagePicker();
-                          final pickedFile = await picker.getImage(source: ImageSource.gallery);
+                          final pickedFile = await picker.pickImage(source: ImageSource.gallery);
                           if (pickedFile != null) {
                             imagePath = pickedFile.path;
                           }

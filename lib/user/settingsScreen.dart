@@ -12,6 +12,7 @@ import 'package:is_app/before/logInPage.dart';
 /// : log out
 /// 
 /// update hitory
+
 ///  : 2024.10.31_add code info
 
 class SettingsScreen extends StatelessWidget {
