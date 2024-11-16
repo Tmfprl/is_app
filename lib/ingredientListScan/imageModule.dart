@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:is_app/common/cropImage.dart';
 import 'package:is_app/config/DBConnect.dart';
+import 'package:is_app/config/StorageService.dart';
 import 'package:is_app/ingredientListScan/ViewIngredientInfo.dart';
 
 /// ingredient scan main funtion
@@ -31,6 +32,7 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  // final _storageService = StorageService();
   final _databaseService = DatabaseService();
   XFile? image;
   CroppedFile? croppedFile;
@@ -151,18 +153,17 @@ class _CameraPageState extends State<CameraPage> {
 
       if (ingredientInfo != null) {
         setState(() {
-          selectedIngredientInfo = ingredientInfo;
+          selectedIngredientInfo =  ingredientInfo; // 성분 정보가 있을 때 반환  
         });
       } else {
         setState(() {
-          selectedIngredientInfo = "해당 성분에 대한 정보가 없습니다.";
+          selectedIngredientInfo =  "해당 성분에 대한 정보가 없습니다."; // 성분 정보가 없을 때 메시지 반환
         });
       }
     } else {
-      // 테이블이 선택되지 않은 경우에 대한 처리
       setState(() {
-        selectedIngredientInfo = "성분표 종류를 먼저 선택하세요.";
-      });
+          selectedIngredientInfo =  "성분표 종류를 먼저 선택하세요."; // 선택된 테이블이 없는 경우 메시지 반환
+        });
     }
   }
   
@@ -170,7 +171,7 @@ class _CameraPageState extends State<CameraPage> {
   // 성분 텍스트를 처리하는 함수
   void _processExtractedText(String tableName, String columnName) {
     // 필터링할 단어 목록 정의 (제거하고자 하는 단어들)
-    List<String> wordsToExclude = ['전성분', '보존제', '기타물질', '양쪽성이온계', '음이온계', '사용방법'];
+    List<String> wordsToExclude = ['전성분', '보존제', '기타물질', '양쪽성이온계', '음이온계', '사용방법', '4 ppm'];
 
     // "전성분"과 다른 불필요한 단어들을 제거
     String cleanedText = extractedText ?? '';
@@ -185,7 +186,7 @@ class _CameraPageState extends State<CameraPage> {
         .replaceAll(RegExp(r'\s+'), ' ')  // 여러 개의 공백을 하나로 변환
         .replaceAll('[', '') // '['를 '대체할 문자1'로
         .replaceAll(']', '') // ']'를 '대체할 문자2'로
-        .replaceAll('1', '') // '1'을 '대체할 문자3'로
+        .replaceAll('1,', '') // '1'을 '대체할 문자3'로
         .replaceAll(':', ', ')
         .replaceAll('•', '')
         .replaceAll('·', ', ')
@@ -217,6 +218,36 @@ class _CameraPageState extends State<CameraPage> {
     return croppedFile!;
   }
 
+  // 알러지 체크하고 다이얼로그를 띄우는 메소드
+  void _checkAndNotifyBeforeButton(List<String> ingredient)async {
+    // 사용자의 알러지 정보 조회을 위한 아이디 가져오기
+    // String? userId = await _storageService.getUserInfo('usr_id');
+    print(ingredient);
+
+    List<String> allergies = await _databaseService.getUserAllergies(ingredient);
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) { // dialogContext 사용
+        return AlertDialog(
+          title: Text('알러지 정보'),
+          content: Text(
+            allergies.isNotEmpty
+              ? '나의 알러지 성분이 포함되어있습니다: ${allergies.join(', ')}'
+              : '알러지 성분이 포함되어 있지 않습니다.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // 다이얼로그 닫기
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   _buildButton() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +274,7 @@ class _CameraPageState extends State<CameraPage> {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 50, width: double.infinity),
+          const SizedBox(height: 30, width: double.infinity),
           _buildButton(),
           const SizedBox(height: 10),
           SizedBox(height: 16),
@@ -271,48 +302,64 @@ class _CameraPageState extends State<CameraPage> {
             ),
           ),
           SizedBox(height: 20),
-          Expanded(
-            child: ingredients.isNotEmpty
-                ? ListView.builder(
-                    itemCount: ingredients.length,
-                    itemBuilder: (context, index) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          // Directly fetch ingredient info without showing dialog
-                          fetchIngredientInfo(ingredients[index]); 
-                        },
-                        child: Text(
-                          ingredients[index],
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      );
-                    },
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(8.0),
-                    color: const Color(0xffe2e5e8),
-                    child: const Text(
-                      "성분 정보가 없습니다.",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
+          ElevatedButton(
+            onPressed: () => _checkAndNotifyBeforeButton(ingredients), // 알러지 성분 확인 버튼
+            child: Text('check my allergy'),
           ),
           const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            color: const Color(0xffe2e5e8),
-            child: selectedIngredientInfo != null
-                ? Text(
-                    selectedIngredientInfo!,
-                    style: TextStyle(fontSize: 16),
-                  )
-                : const Text(
-                    "성분 정보를 선택하세요.",
-                    style: TextStyle(fontSize: 16),
+            Expanded(
+              child: ingredients.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: ingredients.length,
+                      itemBuilder: (context, index) {
+                        // 공백이 아닌 경우에만 버튼 생성
+                        if (ingredients[index].trim().isNotEmpty) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              fetchIngredientInfo(ingredients[index]);
+                            },
+                            child: Text(
+                              ingredients[index] == "2-헥산다이올" 
+                                ? "1, 2-헥산다이올"  // 조건이 맞으면 "1,2-헥산다이올" 버튼을 생성
+                                : ingredients[index], // 조건이 아니라면 원래 성분명 사용 
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          );
+                          
+                        } else {
+                          // 공백 성분명을 건너뛰기 위해 빈 SizedBox 반환
+                          return SizedBox.shrink();
+                        }
+                      },
+                    )
+                  : Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        "성분 정보가 없습니다.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              color: const Color(0xffe2e5e8),
+              child: selectedIngredientInfo != null
+                  ? Text(
+                      selectedIngredientInfo!,
+                      style: TextStyle(fontSize: 16),
+                    )
+                  : const Text(
+                      "성분 정보를 선택하세요.",
+                      style: TextStyle(fontSize: 16),
                   ),
-          ),
+            ),
         ],
       ),
     );
   }
 }
+
+
+
+

@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class StorageService {
   final _storage = const FlutterSecureStorage();
 
-  // 사용자 로그인 정보 저장
+  // 사용자 로그인 정보 저장 (id, pw)
   Future<void> saveUserInfo(String key, String value) async {
     await _storage.write(key: key, value: value);
   }
@@ -24,4 +24,6 @@ class StorageService {
   Future<void> deleteUserInfo(String key) async {
     await _storage.delete(key: key);
   }
+ 
+
 }

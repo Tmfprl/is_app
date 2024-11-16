@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:is_app/config/DBConnect.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:is_app/config/StorageService.dart';
 import 'package:is_app/memu.dart'; // 메인 메뉴 페이지
 import 'package:is_app/before/signup.dart';
 
@@ -16,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _storageService = FlutterSecureStorage();
   final _databaseService = DatabaseService();
+  final _storage = StorageService();
   bool _isLoading = false;
 
   @override
@@ -31,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (savedUsername != null && savedPassword != null) {
       final isValid = await _databaseService.validateUser(savedUsername, savedPassword);
       if (isValid) {
-
+        await _storage.saveUserInfo('usr_id', savedUsername);
         // 자동 로그인 성공 시 메인 메뉴로 이동
         Navigator.pushReplacement(
           context,
@@ -77,9 +79,11 @@ Future<void> _login() async {
     setState(() {
       _isLoading = false;
     });
+    
   }
 }
 
+// 회원가입 페이지로 넘어가는 모듈
   Future<void> _navigateToSignup() async {
     Navigator.push(
       context,
