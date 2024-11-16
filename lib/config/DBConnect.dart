@@ -105,8 +105,6 @@ class DatabaseService {
     }
   }
 
-
-
   // 성분표 분석(scan) 조회 결과 반환 메소드
   Future<String?> getIngredientInfoFromDB(String ingredientName, String tableType) async {
     String columnName;
@@ -198,6 +196,32 @@ class DatabaseService {
     } catch (e) {
       print('Error during user validation: $e');
       return [];
+    } finally {
+      await close();
+    }
+  }
+
+  Future<List<String>> searchMedisen(String medisenName) async {
+    try {
+      await connect();
+      final query = '''
+          SELECT itemName 
+          FROM medical_items
+          WHERE itemName LIKE '%$medisenName%';
+        ''';
+        print(query);
+        print(query);
+      final result = await _connection.execute(query);
+
+      // 결과를 itemName 리스트로 변환
+      List<String> medicines = [];
+      for (final row in result.rows) {
+        // 열 이름을 사용하여 값 접근
+        final itemName = row.colByName('itemName') as String; // 'itemName'이 정확한 열 이름인지 확인
+        medicines.add(itemName);
+      }
+      
+      return medicines;
     } finally {
       await close();
     }
