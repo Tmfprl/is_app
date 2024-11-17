@@ -25,6 +25,7 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +130,7 @@ class _MainMenuState extends State<MainMenu> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Ingredientfind()),
+                        MaterialPageRoute(builder: (context) => MedicineSearchPage()),
                       );
                     },
                     child: Column(

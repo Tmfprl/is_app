@@ -41,6 +41,7 @@ class _CameraPageState extends State<CameraPage> {
   List<String> ingredients = []; 
   String? selectedIngredientInfo; // 선택된 성분 정보 저장
   String? selectedTable; // 선택된 성분표 종류를 저장할 변수
+  String search = '';
 
   // 이미지 선택 및 텍스트 추출 후 카테고리 선택
   void pickImage(bool pickGalleryImage) async {
@@ -286,6 +287,13 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
+  // 성분명 검색 필터링
+  void _filterIngredients(String inputSearch) {
+    setState(() {
+      search = inputSearch;
+    });
+  }
+
 
   _buildButton() {
     return Row(
@@ -324,7 +332,7 @@ class _CameraPageState extends State<CameraPage> {
               height: 40,
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: '검색',
+                  hintText: '성분명 검색',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide(color: Colors.grey),
@@ -337,6 +345,7 @@ class _CameraPageState extends State<CameraPage> {
                 ),
                 style: TextStyle(fontSize: 16),
                 textAlignVertical: TextAlignVertical.center,
+                onChanged: _filterIngredients, // 입력할 때마다 필터링
               ),
             ),
           ),
@@ -352,26 +361,48 @@ class _CameraPageState extends State<CameraPage> {
                       itemCount: ingredients.length,
                       itemBuilder: (context, index) {
                         // 공백이 아닌 경우에만 버튼 생성
-                        if (ingredients[index].trim().isNotEmpty) {
-                          return ElevatedButton(
-                            onPressed: () async {
-                              // fetchIngredientInfo(ingredients[index]);
-                              String ingredientInfo = await fetchIngredientInfo(ingredients[index]);
-                              _showIngredientInfoDialog(context, ingredientInfo);
-                            },
-                            child: Text(
-                              ingredients[index] == "2-헥산다이올" 
-                                ? "1, 2-헥산다이올"  // 조건이 맞으면 "1,2-헥산다이올" 버튼을 생성
-                                : ingredients[index], // 조건이 아니라면 원래 성분명 사용 
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          );
-                          
-                        } else {
-                          // 공백 성분명을 건너뛰기 위해 빈 SizedBox 반환
-                          return SizedBox.shrink();
-                        }
-                      },
+                        // 검색어가 없으면 모든 성분을 보여주고, 검색어가 있으면 필터링하여 해당 성분만 보여준다.
+                      if (ingredients[index].trim().isNotEmpty && 
+                        (search.isEmpty || 
+                        ingredients[index].toLowerCase().contains(search.toLowerCase()))) {
+                        return ElevatedButton(
+                          onPressed: () async {
+                            // 성분 정보를 비동기로 가져오기
+                            String ingredientInfo = await fetchIngredientInfo(ingredients[index]);
+                            // 다이얼로그로 성분 정보 표시
+                            _showIngredientInfoDialog(context, ingredientInfo);
+                          },
+                          child: Text(
+                            ingredients[index] == "2-헥산다이올" 
+                              ? "1, 2-헥산다이올" // 조건이 맞으면 "1,2-헥산다이올" 버튼을 생성
+                              : ingredients[index], // 조건이 아니라면 원래 성분명 사용
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        );
+                      } else {
+                        // 조건을 만족하지 않으면 빈 SizedBox 반환
+                        return SizedBox.shrink();
+                      }
+                      }
+                      //   if (ingredients[index].trim().isNotEmpty) {
+                      //     return ElevatedButton(
+                      //       onPressed: () async {
+                      //         // fetchIngredientInfo(ingredients[index]);
+                      //         String ingredientInfo = await fetchIngredientInfo(ingredients[index]);
+                      //         _showIngredientInfoDialog(context, ingredientInfo);
+                      //       },
+                      //       child: Text(
+                      //         ingredients[index] == "2-헥산다이올" 
+                      //           ? "1, 2-헥산다이올"  // 조건이 맞으면 "1,2-헥산다이올" 버튼을 생성
+                      //           : ingredients[index], // 조건이 아니라면 원래 성분명 사용 
+                      //         style: TextStyle(fontSize: 16),
+                      //       ),
+                      //     );
+                      //   } else {
+                      //     // 공백 성분명을 건너뛰기 위해 빈 SizedBox 반환
+                      //     return SizedBox.shrink();
+                      //   }
+                      // },
                     )
                   : Container(
                       padding: const EdgeInsets.all(8.0),

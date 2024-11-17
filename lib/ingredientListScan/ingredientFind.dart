@@ -144,16 +144,16 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
   }
 }
 
-class Ingredientfind extends StatelessWidget {
-  const Ingredientfind({super.key});
+// class Ingredientfind extends StatelessWidget {
+//   const Ingredientfind({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('약품 검색')),
-      body: Center(
-        child: Text('여기서 약품 검색 기능을 구현합니다.'),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('약품 검색')),
+//       body: Center(
+//         child: Text('여기서 약품 검색 기능을 구현합니다.'),
+//       ),
+//     );
+//   }
+// }
