@@ -101,19 +101,19 @@ class _CameraPageState extends State<CameraPage> {
                 },
                 child: Text('화장품 성분표'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // 다이얼로그 닫기
-                  setState(() {
-                    selectedTable = 'medical_items'; // 선택한 성분표 종류
-                  });
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const ViewInfo()),
-                  // );
-                },
-                child: Text('의약품 성분표'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context); // 다이얼로그 닫기
+              //     setState(() {
+              //       selectedTable = 'medical_items'; // 선택한 성분표 종류
+              //     });
+              //     // Navigator.push(
+              //     //   context,
+              //     //   MaterialPageRoute(builder: (context) => const ViewInfo()),
+              //     // );
+              //   },
+              //   child: Text('의약품 성분표'),
+              // ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context); // 다이얼로그 닫기

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:is_app/config/DBConnect.dart';
+import 'package:is_app/ingredientListScan/ViewIngredientInfo.dart';
 import 'package:is_app/memu.dart';
 
 /// search medisen info 
@@ -30,6 +31,7 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
   List<String> allMedicines = []; // 모든 의약품 데이터
   List<String> searchResults = []; // 검색된 의약품 데이터
   final _databaseService = DatabaseService();
+  final _medisenInfo = MedicineSearchPage();
 
   @override
   void initState() {
@@ -112,7 +114,14 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
                   child: ListTile(
                     title: Text(searchResults[index]),
                     onTap: () {
-                      _showMedicineDetails(context, searchResults[index]);
+                      // _showMedicineDetails(context, searchResults[index]);
+                      String selectedMedicineName = searchResults[index]; // 선택된 의약품 이름
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewInfo(medicineName: selectedMedicineName), // 이름 전달
+                        ),
+                      );
                     },
                   ),
                 );
@@ -146,7 +155,6 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
 
 // class Ingredientfind extends StatelessWidget {
 //   const Ingredientfind({super.key});
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(

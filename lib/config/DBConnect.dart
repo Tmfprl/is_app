@@ -202,6 +202,7 @@ class DatabaseService {
     }
   }
   
+  // 의약품 성분 검색
   Future<List<String>> searchMedisen(String medisenName) async {
     try {
       await connect();
@@ -226,5 +227,25 @@ class DatabaseService {
     } finally {
       await close();
     }
+  }
+
+  Future<String?> medisenInfo(String columnName, String medisenName) async {
+    try {
+      await connect();
+      final query = '''
+          SELECT $columnName 
+          FROM medical_items
+          WHERE itemName = '$medisenName';
+        ''';
+        final result = await _connection.execute(query);
+          // 결과가 비어 있지 않으면 첫 번째 행 가져오기
+        if (result.isNotEmpty) {
+          var row = result.rows.first;
+          return row.colByName(columnName)?.toString() ?? ''; 
+        }
+    } finally {
+      await close();
+    }
+    return null;
   }
 }
