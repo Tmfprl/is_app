@@ -293,7 +293,6 @@ class DatabaseService {
     }
   }
   
-  //의약품 성분 검색
   Future<List<String>> searchMedisen(String medisenName) async {
     try {
       await connect();
