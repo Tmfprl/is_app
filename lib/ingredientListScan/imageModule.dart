@@ -61,7 +61,13 @@ class _CameraPageState extends State<CameraPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("성분표 종류를 선택하세요"),
+          backgroundColor: Colors.white,  // 다이얼로그 배경 색상
+          title: Text(
+            "성분표 종류를 선택하세요",
+            style: TextStyle(
+              color: const Color.fromARGB(255, 48, 53, 51),  // 제목 글자 색상
+            ),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -72,8 +78,21 @@ class _CameraPageState extends State<CameraPage> {
                     selectedTable = 'cosmetic_ingredient';
                   });
                 },
-                child: Text('화장품 성분표'),
+                child: Text(
+                  '화장품 성분표',
+                  style: TextStyle(
+                    color: Colors.white,  // 버튼 글자 색상
+                    fontSize: 16,          // 버튼 글자 크기
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 157, 174, 167),  // 버튼 배경 색상
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),  // 버튼의 둥근 모서리
+                  ),
+                ),
               ),
+              SizedBox(height: 10),  // 버튼 간 간격
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -81,8 +100,21 @@ class _CameraPageState extends State<CameraPage> {
                     selectedTable = 'medical_items';
                   });
                 },
-                child: Text('의약품 성분표'),
+                child: Text(
+                  '의약품 성분표',
+                  style: TextStyle(
+                    color: Colors.white,  // 버튼 글자 색상
+                    fontSize: 16,          // 버튼 글자 크기
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 157, 174, 167),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
               ),
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -90,13 +122,26 @@ class _CameraPageState extends State<CameraPage> {
                     selectedTable = 'chemical_ingredient';
                   });
                 },
-                child: Text('화학약품 성분표'),
+                child: Text(
+                  '화학약품 성분표',
+                  style: TextStyle(
+                    color: Colors.white,  // 버튼 글자 색상
+                    fontSize: 16,          // 버튼 글자 크기
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 157, 174, 167),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
               ),
             ],
           ),
         );
       },
     );
+
     if (selectedType != null) {
       fetchIngredientInfo(selectedType);
     }
@@ -216,38 +261,55 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   _buildButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        ElevatedButton(
-          onPressed: () => pickImage(false),
-          child: Text('Camera',
-          style: TextStyle(
-            color: Colors.white,  // 글자 색을 흰색으로 설정
-            fontSize: 16,          // 폰트 사이즈 설정
-          ),),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 212, 151, 171),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () => pickImage(false),
+              child: Text(
+                'Camera',
+                style: TextStyle(
+                  color: Colors.white,  // 글자 색을 흰색으로 설정
+                  fontSize: 16,          // 폰트 사이즈 설정
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 212, 151, 171),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
             ),
-          ),
-        ),
-        SizedBox(width: 30),
-        ElevatedButton(
-          onPressed: () => pickImage(true),
-          child: Text('Gallery',
-          style: TextStyle(
-            color: Colors.white,  // 글자 색을 흰색으로 설정
-            fontSize: 16,          // 폰트 사이즈 설정
-          ),),                
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 212, 151, 171),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+            SizedBox(width: 30),
+            ElevatedButton(
+              onPressed: () => pickImage(true),
+              child: Text(
+                'Gallery',
+                style: TextStyle(
+                  color: Colors.white,  // 글자 색을 흰색으로 설정
+                  fontSize: 16,          // 폰트 사이즈 설정
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 212, 151, 171),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
+        // 버튼 아래에 구분선 추가
+        SizedBox(height: 10),
+        Divider(
+          color: Colors.grey, // 선 색상
+          thickness: 1,  // 선 두께
+          indent: 16,  // 왼쪽 여백
+          endIndent: 16, // 오른쪽 여백
+        ),
+        SizedBox(height: 10),  // 구분선과 다른 요소 사이에 간격 추가
       ],
     );
   }
@@ -305,14 +367,17 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 212, 151, 171), // 버튼 배경색
+              backgroundColor: ingredients.isEmpty
+                  ? const Color.fromARGB(255, 240, 217, 225) // 성분이 없으면 검은색
+                  : const Color.fromARGB(255, 157, 174, 167), // 성분이 있으면 원래 색
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30), // 버튼 테두리 둥글게
               ),
             ),
           ),
           const SizedBox(height: 20),
-          _buildButton(),
+          _buildButton(), // 카메라 및 갤러리 버튼 및 구분선
+
           Expanded(
             child: ingredients.isNotEmpty
                 ? ListView.builder(
@@ -320,21 +385,27 @@ class _CameraPageState extends State<CameraPage> {
                     itemBuilder: (context, index) {
                       if (ingredients[index].trim().isNotEmpty &&
                           (search.isEmpty || ingredients[index].toLowerCase().contains(search.toLowerCase()))) {
-                        return ElevatedButton(
-                          onPressed: () async {
-                            String ingredientInfo = await fetchIngredientInfo(ingredients[index]);
-                            _showIngredientInfoDialog(context, ingredientInfo);
-                          },
-                          child: Text(
-                            ingredients[index] == "2-헥산다이올" 
-                              ? "1, 2-헥산다이올"
-                              : ingredients[index],
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 212, 151, 171),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 70.0),  // 좌우에 여백을 추가
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              String ingredientInfo = await fetchIngredientInfo(ingredients[index]);
+                              _showIngredientInfoDialog(context, ingredientInfo);
+                            },
+                            child: Text(
+                              ingredients[index] == "2-헥산다이올" 
+                                ? "1, 2-헥산다이올"
+                                : ingredients[index],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,  // 텍스트 색상을 흰색으로 설정
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 153, 168, 187),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
                             ),
                           ),
                         );
@@ -355,4 +426,5 @@ class _CameraPageState extends State<CameraPage> {
       ),
     );
   }
+
 }
