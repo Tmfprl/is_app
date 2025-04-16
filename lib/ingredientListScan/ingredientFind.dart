@@ -85,8 +85,16 @@ class _MedicineSearchPageState extends State<MedicineSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('약품 검색'),
-        centerTitle: true,
+        title: Text(
+          '약품 검색',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 212, 151, 171),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Column(
         children: [
