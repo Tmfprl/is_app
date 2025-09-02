@@ -1,6 +1,5 @@
 # Ingredient Analysis App (Flutter)
 
-# **현재 gcp 토큰 만료로 프로젝트 실행되지 않음 **
 
 ## 📌 Description
 2024년에 개발한 **성분표 분석 어플리케이션**입니다.  
