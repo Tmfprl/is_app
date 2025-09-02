@@ -114,7 +114,7 @@ This project is licensed under the MIT License.
 KOREAN.ver
 
 
-## 📌 Description
+## 📌 프로젝트 개요
 2024년에 개발한 **성분표 분석 어플리케이션**입니다.  
 이 앱은 사용자가 업로드한 성분표 이미지를 기반으로 성분을 인식하고,  
 데이터베이스와 연동하여 **의약품/식품 성분 정보** 및 **알레르기 유발 성분** 여부를 확인할 수 있도록 도와줍니다.  
@@ -127,7 +127,7 @@ KOREAN.ver
 
 ---
 
-## ✨ Features
+## ✨ 주요기능
 - **User Authentication**: 회원가입 및 로그인 기능  
 - **OCR & Ingredient Analysis**: 이미지 기반 성분표 인식 및 분석  
 - **Allergy Data Management**: 사용자 알러지 정보 저장 및 조회  
@@ -136,7 +136,7 @@ KOREAN.ver
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ 기술 스택
 | Component         | Technology            |
 |-------------------|-----------------------|
 | Framework         | Flutter               |
@@ -147,7 +147,7 @@ KOREAN.ver
 
 ---
 
-## 📂 Project Structure
+## 📂 프로젝트 구조
 ```
 
 is\_app
@@ -181,7 +181,7 @@ is\_app
 
 ---
 
-## ⚙️ Installation
+## ⚙️ 설치 방법
 1. Clone the repository:
    ````
    git clone https://github.com/Tmfprl/is_app.git
@@ -202,7 +202,7 @@ is\_app
 
 ---
 
-## 🚀 Usage
+## 🚀 사용 방법
 
 * Launch the app → 회원가입 또는 로그인 진행
 * 성분표 이미지 업로드 → OCR 및 성분 분석 진행
@@ -210,13 +210,13 @@ is\_app
 
 ---
 
-## 📜 License
+## 📜 라이선스
 
 This project is licensed under the MIT License.
 
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 개발자
 
 Developed by GYEONGEUN PARK/MINYOUNG KIM/SAEEUN KIM, 2024.
 
