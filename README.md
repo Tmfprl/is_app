@@ -1,4 +1,4 @@
-# Ingredient Analysis App (Flutter)
+# Ingredient Analysis App 
 
 
 
@@ -112,6 +112,7 @@ This project is licensed under the MIT License.
 
 ---
 KOREAN.ver
+# 성분 분석 앱
 
 
 ## 📌 프로젝트 개요
