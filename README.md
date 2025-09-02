@@ -183,14 +183,14 @@ is\_app
 
 ## ⚙️ Installation
 1. Clone the repository:
-````
+   ````
    git clone https://github.com/Tmfprl/is_app.git
    cd is_app
-````
+   ````
 
 2. Install dependencies:
 
-````
+   ````
    flutter pub get
    ````
 3. Connect to your database by configuring `DBConnect.dart`.
