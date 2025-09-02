@@ -1,6 +1,119 @@
 # Ingredient Analysis App (Flutter)
 
 
+
+## 📌 Description
+This is an **Ingredient Analysis Application** developed in 2024.  
+The app allows users to upload ingredient label images, recognize ingredients, and check **medicinal/food ingredient information** as well as **potential allergy-causing components** by linking with a database.  
+
+- **Framework**: Flutter  
+- **Language**: Dart  
+- **Database**: MySQL  
+- **Development Time**: 2024  
+
+---
+
+## ✨ Features
+- **User Authentication**: Sign-up and login functionality  
+- **OCR & Ingredient Analysis**: Recognize and analyze ingredient labels from images  
+- **Allergy Data Management**: Store and retrieve user allergy information  
+- **Secure Storage**: Encrypt user information and utilize local storage  
+- **UI/UX**: Intuitive interface for ingredient information and settings  
+
+---
+
+## 🛠️ Tech Stack
+| Component         | Technology                       |
+|-------------------|----------------------------------|
+| Framework         | Flutter                          |
+| Language          | Dart                             |
+| Database          | MySQL                            |
+| Authentication    | Custom login/signup              |
+| Storage & Security| Flutter Secure Storage, Encryption |
+
+---
+
+## 📂 Project Structure
+```
+
+is\_app
+├─ before
+│  ├─ logInPage.dart          # User login logic
+│  └─ signup.dart             # User sign-up logic
+│
+├─ common
+│  ├─ CropImage.dart          # Image cropping logic
+│  └─ SplashScreen.dart       # Splash screen
+│
+├─ config
+│  ├─ DBConnect.dart          # Database connection logic (with DTOs)
+│  ├─ StorageService.dart     # Local storage service logic
+│  └─ EncryptUser.dart        # User data encryption logic
+│
+├─ ingredientListScan
+│  ├─ ViewIngredientInfo.dart # Provides ingredient information
+│  ├─ ImageModule.dart        # Ingredient label image processing
+│  └─ IngredientFind.dart     # Query and display ingredient info
+│
+├─ user
+│  ├─ SettingsScreen.dart     # Settings screen
+│  ├─ UserAllergyData.dart    # User allergy management
+│  ├─ UserInfo.dart           # User info management
+│
+├─ Main.dart                  # App entry point
+└─ Menu.dart                  # Main menu page logic
+
+````
+
+---
+
+## ⚙️ Installation
+1. Clone the repository:
+```bash
+git clone https://github.com/Tmfprl/is_app.git
+cd is_app
+````
+
+2. Install dependencies:
+
+```bash
+flutter pub get
+```
+
+3. Configure your database connection in `DBConnect.dart`.
+
+4. Run the app:
+
+```bash
+flutter run
+```
+
+---
+
+## 🚀 Usage
+
+* Launch the app → Sign up or log in
+* Upload an ingredient label image → OCR and ingredient analysis runs
+* Check **ingredient information** and **allergy warnings** on the results screen
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👩‍💻 Authors
+
+* GYEONGEUN PARK
+* MINYOUNG KIM
+* SAEEUN KIM, 2024
+
+---
+KOREAN.ver
+
+
 ## 📌 Description
 2024년에 개발한 **성분표 분석 어플리케이션**입니다.  
 이 앱은 사용자가 업로드한 성분표 이미지를 기반으로 성분을 인식하고,  
